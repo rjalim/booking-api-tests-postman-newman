@@ -349,4 +349,11 @@ newman run API_CRUD_Testing.postman_collection.json -e API_CRUD_Testing.postman_
 ## 📄 API Documentation
 
 
+![Screenshot_16](https://github.com/user-attachments/assets/1572c170-5f85-4bfc-97f5-faafb0a6da16)
+![Screenshot_1](https://github.com/user-attachments/assets/f8f60b58-1bd2-45e6-bc17-34c7c3d6a34d)
+![Screenshot_2](https://github.com/user-attachments/assets/2025addc-6f3b-4417-bc27-1bb377ab5b0b)
+![Screenshot_3](https://github.com/user-attachments/assets/ca822fe4-0faa-4f2f-85fa-b7135399703c)
+
+
+
 
