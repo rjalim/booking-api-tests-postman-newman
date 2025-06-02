@@ -18,8 +18,10 @@ This project demonstrates automated API testing using Postman for a RESTful Book
 
 -HTML reports using Newman
 
-## API Documentation:
-- https://documenter.getpostman.com/view/45376092/2sB2qgfeQo
+## 📄 API Documentation
+
+- 🔗 [View on Postman Documenter](https://documenter.getpostman.com/view/45376092/2sB2qgfeQo)
+
   
 ### **Technology used:**
 - Postman
