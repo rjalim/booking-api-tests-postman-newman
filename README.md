@@ -48,13 +48,16 @@ https://github.com/rjalim/booking-api-tests-postman-newman.git
     - Select **Import** and choose the file.
 5. Newman and Report Installation Process:
     - Newman Install Command:
+      
      ```console 
       npm install -g newman
     ```
     - Newman Html Report Install Command:
+      
      ```console 
       npm install -g newman-reporter-htmlextra
     ```
+     
   ### **Usage**
 1. Select Environment:
     -   In Postman, select the appropriate environment (e.g., Development, Production) from the top-right dropdown.
@@ -63,6 +66,7 @@ https://github.com/rjalim/booking-api-tests-postman-newman.git
     -   Click on the Runner button to open the collection runner.
     -   Select the desired environment.
     -   Click Start Test to run the collection.
+      
 3. View Results:
     -   Once the tests are complete, view the results in the Runner tab.
     -   Detailed test results can be viewed for each request.
