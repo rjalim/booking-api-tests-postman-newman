@@ -72,102 +72,103 @@ https://github.com/rjalim/booking-api-tests-postman-newman.git
 ## Test Case Scenarios:
 
 ## _**1. Create New Booking**_
-
-### Request URL: https://restful-booker.herokuapp.com/booking/
+### BaseUrl : https://restful-booker.herokuapp.com
+### Request URL: {{BaseUrl}}/booking/
 ### Request Method: POST
 ### Pre-request Script:
 ```console 
 var firstName = pm.variables.replaceIn("{{$randomFirstName}}")
+console.log(firstName)
+pm.environment.set("FirstName",firstName)
 
-var lastName = pm.variables.replaceIn("{{$randomLastName}}")
+var lastname = pm.variables.replaceIn("{{$randomLastName}}")
+console.log(lastname)
+pm.environment.set("LastName",lastname)
 
-var totalPrice = pm.variables.replaceIn("{{$randomInt}}")
-// console.log(totalPrice)
+var totalprice = pm.variables.replaceIn("{{$randomInt}}")
+console.log(totalprice)
+pm.environment.set("TotalPrice",totalprice)
 
-var depo = pm.variables.replaceIn("{{$randomBoolean}}")
-console.log(depo)
-// console.log(firstName)
+var depositpaid = pm.variables.replaceIn("{{$randomBoolean}}")
+console.log(depositpaid)
+pm.environment.set("DepositPaid", depositpaid)
 
-//DATE
-const mnt = require('moment')
-const today = mnt()
-// console.log(today.add(1,'d').format('YYYY-MM-DD'))
-var checkIn =  today.add(1,'d').format('YYYY-MM-DD')
-var checkOut =  today.add(10,'d').add(1,'M').format('YYYY-MM-DD')
+const moment = require('moment')
+const today = moment()
+var checkin = today.format("YYYY-MM-DD")
+console.log(today.format("YYYY-MM-DD"))
+pm.environment.set("CheckIn",checkin)
 
-//additional needs
-var need = ["Breakfast", "Lunch", "Snacks", "Dinner"]
+var checkout = today.add(10, 'd').format("YYYY-MM-DD")
+console.log(today.add(10,'d').format("YYYY-MM-DD"))
+pm.environment.set("CheckOut", checkout)
 
-//Math.random gives the float value betwwen 0 and 1
-var needVal = Math.floor(Math.random()* need.length)
-var addNeed = need[ needVal]
-// console.log(needVal)
-// console.log(addNeed)
+const needs = ["Breakfast", "Lunch", "Dinner"];
+const randomNeed = needs[Math.floor(Math.random() * needs.length)];
+console.log("Additional Needs:", randomNeed);
+pm.environment.set("UAdditionalNeeds", randomNeed);  
 
+```
+### Post Response script
+```console
 
-pm.environment.set("first_name",firstName)
-pm.environment.set("last_name",lastName)
-pm.environment.set("totalPrice",totalPrice)
-pm.environment.set("deposit_Paid",depo)
-pm.environment.set("checkIn",checkIn)
-pm.environment.set("checkOut",checkOut)
-pm.environment.set("additionalNeed",addNeed)
-
+var jsonData = pm.response.json()
+pm.environment.set("ID",jsonData.bookingid)
 
 ```
  **Request Body:** 
  ```console 
- {
-	"firstname" : "{{first_name}}",
-	"lastname" : "{{last_name}}",
-	"totalprice" : {{totalPrice}},
-	"depositpaid" : {{deposit_Paid}},
-	"bookingdates" : {
-    	"checkin" : "{{checkIn}}",
-    	"checkout" : "{{checkOut}}"
-	},
-	"additionalneeds" : "{{additionalNeed}}"
+{
+    "firstname": "{{FirstName}}",
+    "lastname": "{{LastName}}",
+    "totalprice": {{TotalPrice}},
+    "depositpaid": {{DepositPaid}},
+    "bookingdates": {
+        "checkin": "{{CheckIn}}",
+        "checkout": "{{CheckOut}}"
+    },
+    "additionalneeds": "{{additionalneeds}}"
 }
 ```
 **Response Body:**
  ```console 
 {
-    "bookingid": 2944,
+    "bookingid": 4878,
     "booking": {
-        "firstname": "Marjory",
-        "lastname": "Ritchie",
-        "totalprice": 833,
-        "depositpaid": false,
+        "firstname": "Emma",
+        "lastname": "Corwin",
+        "totalprice": 511,
+        "depositpaid": true,
         "bookingdates": {
-            "checkin": "2025-02-19",
-            "checkout": "2025-04-01"
+            "checkin": "2025-06-02",
+            "checkout": "2025-06-12"
         },
-        "additionalneeds": "Lunch"
+        "additionalneeds": "Breakfast, Lunch, Dinner"
     }
 }
 ```
  ## _**2. Get Booking Details By ID**_
-### Request URL: https://restful-booker.herokuapp.com/booking/bookingid
+### Request URL: {{BaseUrl}}/booking/{{ID}}
 ### Request Method: GET
 ### Response Body:
  ```console 
 {
-    "bookingid": 2944,
+    "bookingid": 4878,
     "booking": {
-        "firstname": "Marjory",
-        "lastname": "Ritchie",
-        "totalprice": 833,
+        "firstname": "Emma",
+        "lastname": "Corwin",
+        "totalprice": 511,
         "depositpaid": false,
         "bookingdates": {
-            "checkin": "2025-02-19",
-            "checkout": "2025-04-01"
+            "checkin": "2025-06-02",
+            "checkout": "2025-06-12"
         },
-        "additionalneeds": "Lunch"
+        "additionalneeds": "Breakfast, Lunch, Dinner"
     }
 }
 ```
 ## _**3. Create A Token For Authentication.**_
-### Request URL: https://restful-booker.herokuapp.com/auth
+### Request URL: {{BaseUrl}}/auth
 ### Request Method: POST
 ### Pre-request Script: None
 ### Request Body:
@@ -180,63 +181,160 @@ pm.environment.set("additionalNeed",addNeed)
   **Response Body:**
  ```console 
 {
-    "token": "0ee30d009a885d0"
+    "token": "975c06e393952db"
 }
 ```
 
  ## _**4. Update the Booking Details**_
-### Request URL: https://restful-booker.herokuapp.com/booking/bookingid
+### Request URL: {{BaseUrl}}/booking/{{ID}}
 ### Request Method: PUT
 ### Pre-request Script:
 ```console 
-var updated_firstname = pm.variables.replaceIn("{{$randomFirstName}}")
-var updated_lastname = pm.variables.replaceIn("{{$randomLastName}}")
-var updated_price = pm.variables.replaceIn("{{$randomInt}}")
-var updated_deposit = pm.variables.replaceIn("{{$randomBoolean}}")
+var ufirstName = pm.variables.replaceIn("{{$randomFirstName}}");
+console.log("First Name:", ufirstName);
+pm.environment.set("UFirstName", ufirstName);
 
-//updated_DATE
-const update_moment = require('moment')
-const updated_today = update_moment()
-// console.log(updated_today)
+var ulastname = pm.variables.replaceIn("{{$randomLastName}}");
+console.log("Last Name:", ulastname);
+pm.environment.set("ULastName", ulastname);
 
-var updated_checkin = updated_today.add(2,'M').format("YYYY-MM-DD")
-var updated_checkout = updated_today.add(5,'d').add(1,'Y').format("YYYY-MM-DD")
+var utotalprice = pm.variables.replaceIn("{{$randomInt}}");
+console.log("Total Price:", utotalprice);
+pm.environment.set("UTotalPrice", utotalprice);
 
-//additional need
-var updated_need = ["Breakfast","Lunch","Snacks","Dinner"]
-var updated_needval = Math.floor(Math.random()*updated_need.length)
+var udepositpaid = pm.variables.replaceIn("{{$randomBoolean}}");
+console.log("Deposit Paid:", udepositpaid);
+pm.environment.set("UDepositPaid", udepositpaid);
 
-var updated_addNeed = updated_need[updated_needval]
+const moment = require('moment');
+const today = moment();
 
-//environment_set
-pm.environment.set("updated_firstname",updated_firstname)
-pm.environment.set("updated_lastname",updated_lastname)
-pm.environment.set("updated_price",updated_price)
-pm.environment.set("updated_deposit",updated_deposit)
-pm.environment.set("updated_checkin",updated_checkin)
-pm.environment.set("updated_checkout",updated_checkout)
-pm.environment.set("updated_aditionalneed",updated_addNeed)
+var ucheckin = today.format("YYYY-MM-DD");
+console.log("Check-in:", ucheckin);
+pm.environment.set("UCheckIn", ucheckin);
 
+var ucheckout = moment(today).add(10, 'd').format("YYYY-MM-DD");
+console.log("Check-out:", ucheckout);
+pm.environment.set("UCheckOut", ucheckout);
+
+const needs = ["Breakfast", "Lunch", "Dinner"];
+const randomNeed = needs[Math.floor(Math.random() * needs.length)];
+console.log("Additional Needs:", randomNeed);
+pm.environment.set("UAdditionalNeeds", randomNeed); 
 ```
   **Request Body:** 
  ```console
 {
-    "firstname": "Jeanne",
-    "lastname": "Waters",
-    "totalprice": 754,
-    "depositpaid": false,
-    "bookingdates": {
-        "checkin": "2025-04-18",
-        "checkout": "2026-04-23"
-    },
-    "additionalneeds": "Snacks"
+	"firstname" : "{{UFirstName}}",
+	"lastname" : "{{ULastName}}",
+	"totalprice" : {{UTotalPrice}},
+	"depositpaid" : {{UDepositPaid}},
+	"bookingdates" : {
+    	"checkin" : "{{UCheckIn}}",
+    	"checkout" : "{{UCheckOut}}"
+	},
+	"additionalneeds" : "{{UAdditionalNeeds}}"
 }
 ```
-## _**5. Delete Booking Record**_
 
-### Request URL: https://restful-booker.herokuapp.com/booking/bookingid
+**Response Body:**
+
+ ```console
+{
+    "firstname": "Sally",
+    "lastname": "Beatty",
+    "totalprice": 18,
+    "depositpaid": false,
+    "bookingdates": {
+        "checkin": "2025-06-02",
+        "checkout": "2025-06-12"
+    },
+    "additionalneeds": "Breakfast"
+}
+```
+
+ ## _**5. Varify Update Booking**_
+### Request URL: {{BaseUrl}}/booking/{{ID}}
+### Request Method: GET
+### Pre-request Script:
+
+```console 
+var statusCode =pm.response.code
+console.log(statusCode)
+
+if(statusCode==200){
+
+pm.test("Status code is 200", function () {
+    pm.response.to.have.status(200);
+});
+
+var jsonData = pm.response.json()
+
+pm.test("First Name Validation", function(){
+    pm.expect(jsonData.firstname).to.eql (pm.environment.get("UFirstName"))
+})
+
+pm.test("Last Name Validation", function(){
+    pm.expect(jsonData.lastname).to.eql (pm.environment.get("ULastName"))
+})
+pm.test("Total Price Validation", function(){
+    pm.expect(jsonData.totalprice.toString()).to.eql (pm.environment.get("UTotalPrice"))
+})
+
+pm.test("Deposit Paid Validation", function () {
+    var expectedValue = pm.environment.get("UDepositPaid") === 'true'; // convert string to boolean
+    pm.expect(jsonData.depositpaid).to.eql(expectedValue);
+})
+
+pm.test("Check In Validation", function(){
+    pm.expect(jsonData.bookingdates.checkin).to.eql (pm.environment.get("UCheckIn"))
+})
+
+pm.test("Check Out Validation", function(){
+    pm.expect(jsonData.bookingdates.checkout).to.eql (pm.environment.get("UCheckOut"))
+})
+pm.test("Additional Needs Validation", function(){
+    pm.expect(jsonData.additionalneeds).to.eql(pm.environment.get("UAdditionalNeeds"))
+})
+} 
+else if(statusCode==404){
+    pm.test("Not Found")
+}
+else{
+    pm.test("Something went wrong")
+}
+
+```
+
+## _**6. Delete Booking**_
+### Request URL:{{BaseUrl}}/booking/{{ID}}
 ### Request Method: DELETE
-### Response Body: None 
+### Post Response Script
+
+
+## _**7. Varify Delet**_
+### Request URL:{{BaseUrl}}/booking/{{ID}}
+### Request Method: DELETE
+### Post Response Script
+
+```console 
+let statusCode = pm.response.code;
+console.log("Status Code:", statusCode);
+
+if (statusCode === 404) {
+    pm.test("Booking has been successfully deleted", function () {
+        pm.expect(statusCode).to.eql(404);
+    });
+} else {
+    pm.test("Booking still exists or something went wrong", function () {
+        pm.expect(statusCode).to.eql(404);  // force fail if not 404
+    });
+
+    console.log("Response Body:", pm.response.text());
+}
+```
+### Response: 
+Booking has been successfully deleted
 
 ## Run Command:  
 - Run Command for Console: 
@@ -247,4 +345,8 @@ newman run API_CRUD_Testing.postman_collection.json -e API_CRUD_Testing.postman_
 ```console 
 newman run API_CRUD_Testing.postman_collection.json -e API_CRUD_Testing.postman_environment.json -r cli,htmlextra
 ```
+
+## 📄 API Documentation
+
+
 
