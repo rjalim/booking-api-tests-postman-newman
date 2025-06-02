@@ -6,8 +6,13 @@ This project demonstrates automated API testing using Postman for a RESTful Book
 ### **Features**
 
 -Dynamic test data using pre-request scripts
+
 -Automated tests for Create, Read, Update, and Delete (CRUD) operations
+
 -Token-based authentication
+
 -Environment support for flexible configurations
+
 -Assertions and validation scripts in Postman
+
 -HTML reports using Newman
