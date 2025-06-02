@@ -35,7 +35,7 @@ This project demonstrates automated API testing using Postman for a RESTful Book
 1. Postman: If you haven't already, [download and install Postman.](https://www.postman.com/downloads/)
 2. Clone the repository:
 ```console
-git clone  git@github.com:Rupa-Dey/API_Testing_Project01.git
+https://github.com/rjalim/booking-api-tests-postman-newman.git
 ```
 3. Import the Postman collection:
     - Open Postman.
